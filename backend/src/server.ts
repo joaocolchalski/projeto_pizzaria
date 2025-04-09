@@ -1,11 +1,11 @@
-import express from "express";
-import { router } from "./routes"; // Caminho correto para o arquivo router.ts
+import express from "express"
+import { router } from "./routes"
 
-const app = express();
+const app = express()
 
-app.use(express.json()); // Middleware para processar JSON
-app.use(router); // Adicionando as rotas corretamente
+app.use(express.json())
+app.use(router)
 
-app.listen(3000, () => {
+app.listen(3333, () => {
     console.log("Servidor rodando na porta 3333");
 });
