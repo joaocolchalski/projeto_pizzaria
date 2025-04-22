@@ -10,6 +10,7 @@ app.use(cors());
 
 app.use(router);
 
+//Middleware responsável em fazer a tratativa de erros
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof Error) {
     return res.status(400).json({
