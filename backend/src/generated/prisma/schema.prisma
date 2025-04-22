@@ -32,7 +32,7 @@ model Category {
   name       String    @unique
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
-  products   Product[]
+  products   Product[] //Signica que uma Categoria pode ter vários Produtos relacionado a ela
 
   @@map("categories")
 }
@@ -46,10 +46,10 @@ model Product {
   created_at  DateTime? @default(now())
   updated_at  DateTime? @default(now())
 
-  category    Category @relation(fields: [category_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id]) //Faz a relação do Produto com a Categoria, onde a coluna category_id terá o id da Categoria que esse Produto pertence
   category_id String
 
-  order_products OrderProduct[]
+  order_products OrderProduct[] //Significa que um Produto pode ter várias Ordem de Produtos relacionado a ele
 
   @@map("products")
 }
@@ -63,7 +63,7 @@ model Order {
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
-  order_products OrderProduct[]
+  order_products OrderProduct[] //Significa que uma Ordem de Pedido pode ter vários Pedidos de Produtos relacionado a ela
 
   @@map("orders")
 }
@@ -74,8 +74,8 @@ model OrderProduct {
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
-  order   Order   @relation(fields: [order_id], references: [id])
-  product Product @relation(fields: [product_id], references: [id])
+  order   Order   @relation(fields: [order_id], references: [id]) //Faz a relação do Pedido de Produto com a Ordem de Pedido, onde a coluna order_id terá o id da Ordem de Pedido que esse Pedido de Produto pertence
+  product Product @relation(fields: [product_id], references: [id]) //Faz a relação do Pedido de Produto com o Produto, onde a coluna product_id terá o id do Produto que esse Pedido de Produto pertence
 
   order_id   String
   product_id String
