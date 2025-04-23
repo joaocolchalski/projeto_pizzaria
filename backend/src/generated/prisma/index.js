@@ -198,11 +198,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:1929@localhost:5432/pizzaria?schema=public"
+        "value": null
       }
     }
   },
