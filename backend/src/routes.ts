@@ -22,6 +22,7 @@ import { DeleteOrderProductController } from './controllers/order/DeleteOrderPro
 import { SendOrderController } from './controllers/order/SendOrderController';
 import { ListOrdersIsNotDraftController } from './controllers/order/ListOrdersIsNotDraftController';
 import { DetailOrderController } from './controllers/order/DetailOrderController';
+import { FinishOrderController } from './controllers/order/FinishOrderController';
 
 const router = Router();
 
@@ -78,6 +79,11 @@ router.get(
   '/order/detail',
   isAuthenticated,
   new DetailOrderController().handle
+);
+router.put(
+  '/order/finish',
+  isAuthenticated,
+  new FinishOrderController().handle
 );
 
 export { router };
