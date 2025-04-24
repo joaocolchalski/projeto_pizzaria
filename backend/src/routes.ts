@@ -21,6 +21,7 @@ import { CreateOrderProductController } from './controllers/order/CreateOrderPro
 import { DeleteOrderProductController } from './controllers/order/DeleteOrderProductController';
 import { SendOrderController } from './controllers/order/SendOrderController';
 import { ListOrdersIsNotDraftController } from './controllers/order/ListOrdersIsNotDraftController';
+import { DetailOrderController } from './controllers/order/DetailOrderController';
 
 const router = Router();
 
@@ -72,6 +73,11 @@ router.get(
   '/order',
   isAuthenticated,
   new ListOrdersIsNotDraftController().handle
+);
+router.get(
+  '/order/detail',
+  isAuthenticated,
+  new DetailOrderController().handle
 );
 
 export { router };

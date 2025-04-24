@@ -7,6 +7,9 @@ class ListOrdersIsNotDraftService {
         draft: false,
         status: false,
       },
+      orderBy: {
+        created_at: 'desc',
+      },
     });
 
     return orders;
