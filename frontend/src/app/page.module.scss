@@ -6,6 +6,12 @@
   align-items: center;
 }
 
+.logo{
+  width: 80%;
+  max-width: 476px;
+  height: auto;
+}
+
 .login {
   margin-top: 24px;
   display: flex;
@@ -17,32 +23,36 @@
 
   form {
     color: var(--white);
-    font-size: 18px;
     display: flex;
     flex-direction: column;
-    width: 90%;
-    max-width: 280px;
+    width: 70%;
+    max-width: 400px;
     gap: 16px;
   }
 
   form button {
-    padding: 8px 0;
-    font-size: 16px;
+    padding: 13px 0;
+    font-size: 18px;
     background-color: var(--red-900);
     color: var(--white);
     font-weight: bold;
     border: 0;
     border-radius: 6px;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  form button:hover{
+    transform:  scale(1.02);
   }
 }
 
 .input {
   font-size: 16px;
   background-color: var(--dark-900);
-  padding: 5px 8px;
+  padding: 13px 16px;
   color: var(--white);
   border-radius: 6px;
-  border: 2px solid var(--gray-100);
+  border: 1px solid var(--gray-100);
 }
 
 .text {
