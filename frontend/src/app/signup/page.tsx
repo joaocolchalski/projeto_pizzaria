@@ -2,16 +2,37 @@ import styles from '@/app/page.module.scss';
 import logoImg from '/public/logo.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { api } from '@/services/api';
+import { redirect } from 'next/navigation';
 
 export default function Signup() {
     async function handleRegister(formData: FormData) {
-        'user server';
+        'use server'; //Faz com que essa função se torna um server action
 
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const password = formData.get('password');
+        const name = formData.get('name') as string;
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
 
-        console.log(name);
+        if (
+            name.trim().length === 0 ||
+            email.trim().length === 0 ||
+            password.trim().length === 0
+        ) {
+            console.log('Preencha todos os campos!');
+            return;
+        }
+
+        try {
+            await api.post('/users', {
+                name,
+                email,
+                password,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+
+        redirect('/');
     }
 
     return (

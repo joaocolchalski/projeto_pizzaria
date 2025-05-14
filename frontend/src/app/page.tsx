@@ -2,8 +2,58 @@ import Image from 'next/image';
 import styles from './page.module.scss';
 import logoImg from '/public/logo.svg';
 import Link from 'next/link';
+import { api } from '@/services/api';
+import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
+
+interface LoginProps {
+    id: string;
+    name: string;
+    email: string;
+    token: string;
+}
 
 export default function Home() {
+    async function handleLogin(formData: FormData) {
+        'use server';
+
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+
+        if (email.trim().length === 0 || password.trim().length === 0) {
+            console.log('Preencha todos os campos!');
+            return;
+        }
+
+        try {
+            const response = await api.post<LoginProps>('/session', {
+                email,
+                password,
+            });
+
+            if (!response.data.token) {
+                return;
+            }
+
+            console.log(response.data);
+
+            const quantidadeDias = 30;
+            const expressTime = 60 * 60 * 24 * 1000 * quantidadeDias;
+            const cookieLogin = await cookies();
+
+            cookieLogin.set('session', response.data.token, {
+                maxAge: expressTime,
+                path: '/',
+                httpOnly: false,
+                secure: process.env.NODE_ENV === 'production',
+            });
+        } catch (err) {
+            console.log(err);
+        }
+
+        redirect('/dashboard');
+    }
+
     return (
         <>
             <div className={styles.containerCenter}>
@@ -14,7 +64,7 @@ export default function Home() {
                 />
 
                 <section className={styles.login}>
-                    <form>
+                    <form action={handleLogin}>
                         <input
                             type="email"
                             name="email"
