@@ -53,10 +53,11 @@
     color: var(--white);
     border-radius: 6px;
     border: 1px solid var(--gray-100);
+    transition: box-shadow 0.3s ease;
 }
 
 .input:focus {
-    border: 2px solid var(--gray-100);
+    box-shadow: 0 0 0 2px var(--gray-100);
 }
 
 .text {

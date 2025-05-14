@@ -42,6 +42,8 @@ export default function Signup() {
                     className={styles.logo}
                     src={logoImg}
                     alt="Logo da Pizzaria"
+                    priority={true}
+                    quality={100}
                 />
 
                 <section className={styles.login}>

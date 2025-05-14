@@ -38,10 +38,10 @@ export default function Home() {
             console.log(response.data);
 
             const quantidadeDias = 30;
-            const expressTime = 60 * 60 * 24 * 1000 * quantidadeDias;
-            const cookieLogin = await cookies();
+            const expressTime = 60 * 60 * 24 * quantidadeDias;
+            const cookieStore = await cookies();
 
-            cookieLogin.set('session', response.data.token, {
+            cookieStore.set('session', response.data.token, {
                 maxAge: expressTime,
                 path: '/',
                 httpOnly: false,
@@ -61,6 +61,8 @@ export default function Home() {
                     className={styles.logo}
                     src={logoImg}
                     alt="Logo da Pizzaria"
+                    priority={true}
+                    quality={100}
                 />
 
                 <section className={styles.login}>
