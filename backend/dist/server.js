@@ -32,6 +32,6 @@ app.use((err, req, res, next) => {
         message: 'Internal Server Error',
     });
 });
-app.listen(3333, () => {
+app.listen(process.env.PORT, () => {
     console.log('Servidor rodando na porta 3333');
 });
