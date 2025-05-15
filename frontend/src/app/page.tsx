@@ -1,10 +1,12 @@
+'use client';
 import Image from 'next/image';
 import styles from './page.module.scss';
 import logoImg from '/public/logo.svg';
 import Link from 'next/link';
 import { api } from '@/services/api';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+import { setCookie } from 'cookies-next';
+import { toast } from 'sonner';
 
 interface LoginProps {
     id: string;
@@ -15,13 +17,11 @@ interface LoginProps {
 
 export default function Home() {
     async function handleLogin(formData: FormData) {
-        'use server';
-
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
 
         if (email.trim().length === 0 || password.trim().length === 0) {
-            console.log('Preencha todos os campos!');
+            toast.warning('Preencha todos os campos!');
             return;
         }
 
@@ -39,16 +39,15 @@ export default function Home() {
 
             const quantidadeDias = 30;
             const expressTime = 60 * 60 * 24 * quantidadeDias;
-            const cookieStore = await cookies();
 
-            cookieStore.set('session', response.data.token, {
+            setCookie('session', response.data.token, {
                 maxAge: expressTime,
                 path: '/',
                 httpOnly: false,
                 secure: process.env.NODE_ENV === 'production',
             });
         } catch (err) {
-            console.log(err);
+            toast.error('E-mail/Senha incorreto!');
         }
 
         redirect('/dashboard');

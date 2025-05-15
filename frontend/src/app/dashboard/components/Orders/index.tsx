@@ -1,7 +1,12 @@
 import styles from './styles.module.scss';
 import { TfiReload } from 'react-icons/tfi';
+import { OrderProps } from '@/lib/order.type';
 
-export default function Orders() {
+interface Props {
+    listOrders: OrderProps[];
+}
+
+export default function Orders({ listOrders }: Props) {
     return (
         <main className={styles.ordersContainer}>
             <section className={styles.headerContainer}>
@@ -12,15 +17,18 @@ export default function Orders() {
             </section>
 
             <section className={styles.listOrders}>
-                <button className={styles.orderItem}>
-                    <div className={styles.tag}></div>
-                    <span>Mesa 10</span>
-                </button>
-
-                <button className={styles.orderItem}>
-                    <div className={styles.tag}></div>
-                    <span>Mesa 13</span>
-                </button>
+                {listOrders.length > 0 ? (
+                    listOrders.map((order) => (
+                        <button key={order.id} className={styles.orderItem}>
+                            <div className={styles.tag}></div>
+                            <span>Mesa {order.table}</span>
+                        </button>
+                    ))
+                ) : (
+                    <span className={styles.message}>
+                        Não há pedidos em aberto!
+                    </span>
+                )}
             </section>
         </main>
     );

@@ -2,7 +2,6 @@ import styles from './styles.module.scss';
 import { Button } from '../components/Button';
 import { api } from '@/services/api';
 import { getCookieServer } from '@/lib/cookieServer';
-import { redirect } from 'next/navigation';
 
 export default function Category() {
     async function handleRegisterCategory(formData: FormData) {
@@ -11,7 +10,6 @@ export default function Category() {
         const name = formData.get('name') as string;
 
         if (name.trim().length === 0) {
-            console.log('Digite alguma categoria!');
             return;
         }
 
@@ -26,10 +24,7 @@ export default function Category() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
-            console.log('Categoria cadastrada com sucesso!');
         } catch (err) {
-            console.log('Erro ao cadastrar a categoria!');
             return;
         }
     }

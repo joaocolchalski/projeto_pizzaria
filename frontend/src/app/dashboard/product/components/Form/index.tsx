@@ -4,9 +4,13 @@ import styles from './styles.module.scss';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import Image from 'next/image';
 import { Button } from '@/app/dashboard/components/Button';
+import { api } from '@/services/api';
+import { getCookieClient } from '@/lib/cookieClient';
+import { toast } from 'sonner';
+import { CategoryProps } from '@/lib/category.type';
 
-export function Form() {
-    const [image, setImage] = useState<File>();
+export function Form({ listCategories }: { listCategories: CategoryProps[] }) {
+    const [image, setImage] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     function handleFile(event: ChangeEvent<HTMLInputElement>) {
@@ -18,7 +22,7 @@ export function Form() {
                 image.type !== 'image/jpg' &&
                 image.type !== 'image/png'
             ) {
-                console.log('Formato de imagem inválido!');
+                toast.warning('Formato de imagem inválido!');
                 return;
             }
 
@@ -27,11 +31,51 @@ export function Form() {
         }
     }
 
+    async function handleRegisterProduct(formData: FormData) {
+        const categoryIndex = formData.get('category');
+        const name = formData.get('name') as string;
+        const price = formData.get('price') as string;
+        const description = formData.get('description') as string;
+
+        if (
+            !image ||
+            !categoryIndex ||
+            name.trim().length === 0 ||
+            price.trim().length === 0 ||
+            description.trim().length === 0
+        ) {
+            toast.warning('Preencha todos os campos!');
+            return;
+        }
+
+        const token = await getCookieClient();
+        const data = new FormData();
+
+        data.append('name', name);
+        data.append('price', price);
+        data.append('description', description);
+        data.append('category_id', listCategories[Number(categoryIndex)].id);
+        data.append('file', image);
+
+        try {
+            await api.post('/product', data, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            setPreviewImage(null);
+            toast.success('Cadastrado com sucesso!');
+        } catch (error) {
+            toast.error('Erro ao cadastrar o produto!');
+        }
+    }
+
     return (
         <main className={styles.formContainer}>
             <h1>Novo Prouto</h1>
 
-            <form action="" className={styles.form}>
+            <form action={handleRegisterProduct} className={styles.form}>
                 <label className={styles.labelImage}>
                     <span>
                         <FaCloudUploadAlt size={30} color="#8a8a8a" />
@@ -57,12 +101,11 @@ export function Form() {
                 </label>
 
                 <select name="category">
-                    <option key={1} value={1}>
-                        Pizzas
-                    </option>
-                    <option key={2} value={2}>
-                        Massas
-                    </option>
+                    {listCategories.map((category, index) => (
+                        <option key={category.id} value={index}>
+                            {category.name}
+                        </option>
+                    ))}
                 </select>
 
                 <input
